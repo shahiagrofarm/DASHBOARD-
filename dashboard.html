@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SHAHI AGRO FARM | Business Dashboard</title>
+<style>
+:root{--bg:#f3f7f1;--card:#fff;--ink:#183324;--muted:#6d7d71;--green:#1f6b43;--lime:#d9ef8b;--line:#e2eadf;--shadow:0 12px 34px #173d2010}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:24px clamp(18px,4vw,48px);background:linear-gradient(120deg,#103d28,#267548);color:white;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;gap:12px;align-items:center}.mark{width:44px;height:44px;border-radius:50%;background:var(--lime);color:#16492e;display:grid;place-items:center;font-weight:900;font-size:18px}.brand h1{font-size:19px;margin:0}.brand p{margin:2px 0 0;color:#d6e8d9;font-size:12px}
+.actions{display:flex;gap:9px;flex-wrap:wrap}button,.btn{border:0;border-radius:10px;padding:11px 14px;font-weight:750;cursor:pointer;background:var(--lime);color:#173d28}button.secondary{background:#ffffff18;color:white;border:1px solid #ffffff40}
+main{max-width:1400px;margin:auto;padding:28px clamp(14px,3vw,36px) 56px}.notice{background:#fff8df;border:1px solid #eadca5;color:#6b571b;padding:13px 16px;border-radius:12px;margin-bottom:22px;font-size:13px}
+h2{font-size:20px;margin:0 0 16px}.muted{color:var(--muted)}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:var(--shadow);min-width:0}.metric-label{font-size:12px;color:var(--muted);font-weight:700}.metric-value{font-size:clamp(22px,2.5vw,32px);letter-spacing:-.8px;font-weight:850;margin:7px 0 4px}.metric-foot{font-size:12px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-bottom:22px}.bar-row{display:grid;grid-template-columns:110px 1fr 75px;gap:10px;align-items:center;margin:15px 0;font-size:12px}.bar{height:10px;border-radius:99px;background:#edf2e9;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#70ae5a,#1f6b43);border-radius:99px}
+.formgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px;color:var(--muted)}input,select{width:100%;border:1px solid var(--line);background:#fbfdf9;padding:11px;border-radius:9px;color:var(--ink)}.form-actions{display:flex;gap:9px;align-items:end}.form-actions button{background:var(--green);color:white;width:100%}
+.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:720px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px}td strong{font-weight:750}.status{display:inline-block;background:#fff1cc;color:#805b00;padding:4px 8px;border-radius:20px;font-size:11px;font-weight:800}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}.smallbtn{padding:7px 9px;border-radius:8px;font-size:12px}.danger{background:#fee8e5;color:#a62c21}
+footer{font-size:12px;color:var(--muted);text-align:center;padding:24px}
+@media(max-width:900px){.metrics{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}.formgrid{grid-template-columns:repeat(2,1fr)}}@media(max-width:540px){.metrics{gap:8px}.card{padding:14px}.metric-value{font-size:24px}.formgrid{grid-template-columns:1fr}.two{grid-template-columns:1fr}.bar-row{grid-template-columns:90px 1fr 60px}}
+</style></head><body>
+<header><div class="brand"><div class="mark">S</div><div><h1>SHAHI AGRO FARM</h1><p>Business Intelligence · Owner Dashboard</p></div></div>
+<div class="actions"><button class="secondary" id="export">Download Excel-compatible CSV</button><button class="secondary" id="backup">Export Full Backup</button></div></header>
+<main>
+<div class="notice"><strong>Important:</strong> This starter dashboard stores data in this browser only. It is not yet a secure, cross-device live connection. To count all visitors and receive every customer order from the public website, connect a shared backend/database and analytics service before relying on these totals.</div>
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:15px"><div><h2 style="margin-bottom:3px">Business overview</h2><div class="muted">Sales, profit, orders and website activity at a glance.</div></div><div class="muted" id="period"></div></div>
+<section class="metrics">
+<div class="card"><div class="metric-label">TOTAL SALES</div><div class="metric-value" id="sales">৳0</div><div class="metric-foot">Recorded order revenue</div></div>
+<div class="card"><div class="metric-label">ESTIMATED PROFIT</div><div class="metric-value" id="profit">৳0</div><div class="metric-foot">Revenue minus entered product costs</div></div>
+<div class="card"><div class="metric-label">ORDERS</div><div class="metric-value" id="orders">0</div><div class="metric-foot" id="pending">0 pending</div></div>
+<div class="card"><div class="metric-label">VISITS RECORDED</div><div class="metric-value" id="visits">0</div><div class="metric-foot">This browser/device only</div></div>
+</section>
+<div class="layout"><section class="card"><h2>Sales by product / category</h2><div id="salesBars"></div><p class="muted" style="font-size:12px">Charts update from orders entered or captured by the connected site.</p></section>
+<section class="card"><h2>Quick insights</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div><div class="metric-label">AVG. ORDER VALUE</div><div class="metric-value" style="font-size:23px" id="aov">৳0</div></div><div><div class="metric-label">UNIQUE CUSTOMERS</div><div class="metric-value" style="font-size:23px" id="customers">0</div></div><div><div class="metric-label">PRODUCT COSTS</div><div class="metric-value" style="font-size:23px" id="costs">৳0</div></div><div><div class="metric-label">PROFIT MARGIN</div><div class="metric-value" style="font-size:23px" id="margin">0%</div></div></div></section></div>
+<section class="card" style="margin-bottom:20px"><h2>Add a sale / expense record</h2><p class="muted" style="font-size:13px;margin-top:-8px">Use this form for offline sales, operating costs, or to add a product cost per packet. Use accurate figures for meaningful profit reports.</p>
+<form id="entryForm" class="formgrid">
+<div class="field"><label>Record type</label><select id="type"><option value="sale">Sale / Order</option><option value="expense">Business expense</option><option value="cost">Product cost per packet</option></select></div>
+<div class="field"><label>Customer / description</label><input id="person" placeholder="Customer name or expense" required></div>
+<div class="field"><label>Product / category</label><select id="product"><option>Grass Silage</option><option>Ghee</option><option>Dodi</option><option>Other</option></select></div>
+<div class="field"><label>Quantity (packets / units)</label><input id="qty" type="number" min="1" value="20" required></div>
+<div class="field"><label>Sale amount / expense (৳)</label><input id="amount" type="number" min="0" step="0.01" placeholder="e.g. 7000" required></div>
+<div class="field"><label>Cost per unit (৳)</label><input id="unitcost" type="number" min="0" step="0.01" value="0"></div>
+<div class="field"><label>Payment / status</label><select id="status"><option>Pending</option><option>Paid</option><option>Cash on Delivery</option><option>Cancelled</option></select></div>
+<div class="form-actions"><button type="submit">Save record</button></div></form></section>
+<div class="two"><section class="card"><h2>Recent orders & sales</h2><div class="tablewrap"><table><thead><tr><th>Date</th><th>Customer</th><th>Product</th><th>Qty</th><th>Sales</th><th>Profit*</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table></div><p class="muted" style="font-size:11px">*Profit is estimated from the cost entered for that record; delivery, wages, advertising, tax and other expenses must be recorded separately.</p></section>
+<section class="card"><h2>Website traffic</h2><div class="metric-value" id="uniqueVisits">0</div><div class="muted">Sessions logged on this browser</div><div id="visitRows" style="margin-top:14px"></div><hr style="border:0;border-top:1px solid var(--line);margin:18px 0"><h2>Import / reset</h2><label class="muted" style="display:block;font-size:12px;margin-bottom:8px">Import a dashboard JSON backup</label><input id="importFile" type="file" accept=".json,application/json"><button id="reset" class="smallbtn danger" style="margin-top:12px">Clear dashboard data</button></section></div>
+<footer>SHAHI AGRO FARM · Private business dashboard starter · Keep customer data confidential.</footer>
+</main>
+<script>
+const KEY='shahiBusinessAnalytics', MANUAL='shahiDashboardManual', COSTS='shahiProductCosts';
+const $=id=>document.getElementById(id), money=n=>'৳'+Number(n||0).toLocaleString('en-BD',{maximumFractionDigits:2});
+function read(){try{return JSON.parse(localStorage.getItem(KEY)||'{"orders":[],"visits":[]}')}catch(e){return {orders:[],visits:[]}}}
+function manual(){try{return JSON.parse(localStorage.getItem(MANUAL)||'[]')}catch(e){return []}}
+function costs(){try{return JSON.parse(localStorage.getItem(COSTS)||'{"Grass Silage":0,"Ghee":0,"Dodi":0,"Other":0}')}catch(e){return {}}}
+function saveManual(x){localStorage.setItem(MANUAL,JSON.stringify(x))}
+function allOrders(){let d=read();return [...(d.orders||[]).map(o=>({...o,product:o.product||'Grass Silage',source:'Website'})),...manual().filter(x=>x.type==='sale').map(x=>({...x,source:'Manual'}))]}
+function render(){
+ const d=read(), m=manual(), orders=allOrders(), expenses=m.filter(x=>x.type==='expense').reduce((a,x)=>a+Number(x.amount||0),0);
+ const costMap=costs(); const revenue=orders.filter(o=>o.status!=='Cancelled').reduce((a,o)=>a+Number(o.totalAmount??o.amount??0),0);
+ const productCost=orders.filter(o=>o.status!=='Cancelled').reduce((a,o)=>a+Number(o.quantity||o.qty||1)*Number(o.costPerPacket??o.unitcost??costMap[o.product||'Grass Silage']||0),0);
+ const profit=revenue-productCost-expenses;
+ $('sales').textContent=money(revenue);$('profit').textContent=money(profit);$('orders').textContent=orders.length;$('pending').textContent=orders.filter(o=>!['Paid','Cancelled'].includes(o.status)).length+' pending';
+ $('visits').textContent=(d.visits||[]).length;$('uniqueVisits').textContent=(d.visits||[]).length;
+ $('costs').textContent=money(productCost+expenses);$('customers').textContent=new Set(orders.map(o=>o.phone||o.name||o.person).filter(Boolean)).size;
+ $('aov').textContent=money(orders.length?revenue/orders.length:0);$('margin').textContent=(revenue?Math.round(profit/revenue*100):0)+'%';$('period').textContent=new Date().toLocaleDateString();
+ const cats={};orders.forEach(o=>{if(o.status!=='Cancelled'){let p=o.product||'Grass Silage';cats[p]=(cats[p]||0)+Number(o.totalAmount??o.amount??0)}});if(!Object.keys(cats).length)cats['No sales yet']=0;
+ const max=Math.max(1,...Object.values(cats));$('salesBars').innerHTML=Object.entries(cats).map(([k,v])=>`<div class="bar-row"><span>${esc(k)}</span><div class="bar"><i style="width:${v/max*100}%"></i></div><strong>${money(v)}</strong></div>`).join('');
+ $('rows').innerHTML=orders.slice().reverse().slice(0,30).map((o,i)=>{let q=Number(o.quantity||o.qty||1),amt=Number(o.totalAmount??o.amount??0),c=Number(o.costPerPacket??o.unitcost??costMap[o.product||'Grass Silage']||0),p=amt-q*c;return `<tr><td>${esc((o.createdAt||o.date||'').slice(0,10)||'—')}</td><td>${esc(o.name||o.person||'—')}</td><td>${esc(o.product||'Grass Silage')}</td><td>${q}</td><td>${money(amt)}</td><td>${money(p)}</td><td><span class="status">${esc(o.status||'Pending')}</span></td><td><button class="smallbtn danger" data-del="${esc(o.id||'')}" data-source="${o.source||''}">Delete</button></td></tr>`}).join('')||'<tr><td colspan="8" class="muted">No orders yet. Add a record below or connect the website.</td></tr>';
+ $('visitRows').innerHTML=(d.visits||[]).slice().reverse().slice(0,5).map(v=>`<div style="font-size:12px;border-bottom:1px solid var(--line);padding:8px 0"><strong>${esc(v.page||'/')}</strong><br><span class="muted">${esc((v.at||'').replace('T',' ').slice(0,16))} · ${esc(v.source||'Direct')}</span></div>`).join('')||'<p class="muted" style="font-size:12px">No visits recorded on this browser yet.</p>';
+ $('rows').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{if(!confirm('Delete this record?'))return;let arr=manual();let id=b.dataset.del;if(b.dataset.source==='Manual')saveManual(arr.filter(x=>x.id!==id));else{let data=read();data.orders=data.orders.filter(x=>x.id!==id);localStorage.setItem(KEY,JSON.stringify(data))}render()});
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('entryForm').onsubmit=e=>{e.preventDefault();let type=$('type').value, product=$('product').value, qty=Number($('qty').value), amount=Number($('amount').value), unitcost=Number($('unitcost').value||0);if(type==='cost'){let c=costs();c[product]=unitcost||amount;localStorage.setItem(COSTS,JSON.stringify(c));}else{let arr=manual();arr.push({id:'MAN-'+Date.now(),type,person:$('person').value,product,qty,quantity:qty,amount,totalAmount:type==='sale'?amount:0,unitcost,costPerPacket:unitcost,status:$('status').value,date:new Date().toISOString(),createdAt:new Date().toISOString()});saveManual(arr)}e.target.reset();$('qty').value=20;$('unitcost').value=0;render()};
+function csvEscape(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}
+$('export').onclick=()=>{let orders=allOrders();let rows=[['Date','Order ID','Customer','Phone','Address','Product','Quantity','Weight KG','Sales BDT','Cost per unit BDT','Payment method','Transaction ID','Status'],...orders.map(o=>[o.createdAt||o.date,o.id,o.name||o.person,o.phone,o.address,o.product||'Grass Silage',o.quantity||o.qty,o.totalWeightKg, o.totalAmount??o.amount,o.costPerPacket??o.unitcost,o.paymentMethod,o.transactionId,o.status])];let d=read();rows.push([],['WEBSITE VISITS'],['Date','Page','Source'],...(d.visits||[]).map(v=>[v.at,v.page,v.source]));rows.push([],['EXPENSES'],['Date','Description','Category','Amount BDT'],...manual().filter(x=>x.type==='expense').map(x=>[x.date,x.person,x.product,x.amount]));let csv='\ufeff'+rows.map(r=>r.map(csvEscape).join(',')).join('\r\n');download(new Blob([csv],{type:'text/csv;charset=utf-8;'}),'shahi-agro-business-report.csv')};
+$('backup').onclick=()=>download(new Blob([JSON.stringify({analytics:read(),manual:manual(),productCosts:costs()},null,2)],{type:'application/json'}),'shahi-dashboard-backup.json');
+function download(blob,name){let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href)}
+$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let j=JSON.parse(await f.text());if(j.analytics)localStorage.setItem(KEY,JSON.stringify(j.analytics));if(j.manual)localStorage.setItem(MANUAL,JSON.stringify(j.manual));if(j.productCosts)localStorage.setItem(COSTS,JSON.stringify(j.productCosts));render();alert('Backup imported.')}catch(err){alert('Invalid backup file.')}};
+$('reset').onclick=()=>{if(confirm('Clear all dashboard orders, visits, costs and manual records from this browser?')){localStorage.removeItem(KEY);localStorage.removeItem(MANUAL);localStorage.removeItem(COSTS);render()}};
+render();
+</script></body></html>
